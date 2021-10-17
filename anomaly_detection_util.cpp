@@ -23,7 +23,15 @@ float var(float* x, int size)
 }
 
 // returns the covariance of X and Y
-float cov(float* x, float* y, int size);
+float cov(float* x, float* y, int size){
+    float sum;
+    float Xaverage = average(x,size);
+    float Yaverage= average(y,size);
+    for(int i=0; i<size;i++){
+        sum = (x[i]- Xaverage)*(y[i]-Yaverage)
+    }
+    return sum/size;
+}
 
 // returns the Pearson correlation coefficient of X and Y
 float pearson(float* x, float* y, int size)
@@ -62,8 +70,11 @@ Line linear_reg(Point** points, int size)
 }
 
 // returns the deviation between point p and the line equation of the points
-float dev(Point p,Point** points, int size);
+float dev(Point p,Point** points, int size){
+    dev(p,linear_reg(points,size));
+}
 
 // returns the deviation between point p and the line
-float dev(Point p,Line l);
-//
+float dev(Point p,Line l){
+    return Math.abs(l.a*p.x+l.b-p.y);
+}
