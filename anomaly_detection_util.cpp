@@ -28,7 +28,7 @@ float cov(float* x, float* y, int size){
     float Xaverage = average(x,size);
     float Yaverage= average(y,size);
     for(int i=0; i<size;i++){
-        sum = (x[i]- Xaverage)*(y[i]-Yaverage)
+        sum = (x[i]- Xaverage)*(y[i]-Yaverage);
     }
     return sum/size;
 }
@@ -69,12 +69,13 @@ Line linear_reg(Point** points, int size)
     return {a, b};
 }
 
-// returns the deviation between point p and the line equation of the points
-float dev(Point p,Point** points, int size){
-    dev(p,linear_reg(points,size));
-}
+
 
 // returns the deviation between point p and the line
 float dev(Point p,Line l){
-    return Math.abs(l.a*p.x+l.b-p.y);
+    return abs(l.a*p.x+l.b-p.y);
+}
+// returns the deviation between point p and the line equation of the points
+float dev(Point p,Point** points, int size){
+    dev(p,linear_reg(points,size));
 }
