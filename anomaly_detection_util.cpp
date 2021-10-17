@@ -28,7 +28,7 @@ float cov(float* x, float* y, int size){
     float Xaverage = average(x,size);
     float Yaverage= average(y,size);
     for(int i=0; i<size;i++){
-        sum = (x[i]- Xaverage)*(y[i]-Yaverage);
+        sum += (x[i]- Xaverage) * (y[i]-Yaverage);
     }
     return sum/size;
 }
