@@ -79,8 +79,3 @@ float dev(Point p,Line l){
 float dev(Point p,Point** points, int size){
     dev(p,linear_reg(points,size));
 }
-
-int main(int argc, char *argv[]){
-    float x[]={1,2,3,4,5,6,7,8,9,10};
-    std::cout<<var(x,10)<<;
-}
