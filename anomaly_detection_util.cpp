@@ -1,4 +1,6 @@
 #include <cmath>
+#include <iostream>
+
 float average(float* a,int size){
     float sum = 0;
     for(int i=0; i<size; i++){
@@ -30,13 +32,13 @@ float cov(float* x, float* y, int size){
     for(int i=0; i<size;i++){
         sum += (x[i]- Xaverage) * (y[i]-Yaverage);
     }
-    return sum/size;
+    return sum/(float)size;
 }
 
 // returns the Pearson correlation coefficient of X and Y
 float pearson(float* x, float* y, int size)
 {
-    return cov(x, y, size) / (float)cbrt((double)var(x, size) * var(y, size));
+    return cov(x, y, size) / (float)sqrt((double)var(x, size) * var(y, size));
 }
 
 class Line{
