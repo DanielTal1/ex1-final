@@ -24,7 +24,7 @@ float var(float* x, int size)
 
 // returns the covariance of X and Y
 float cov(float* x, float* y, int size){
-    float sum;
+    float sum=0;
     float Xaverage = average(x,size);
     float Yaverage= average(y,size);
     for(int i=0; i<size;i++){
@@ -78,4 +78,9 @@ float dev(Point p,Line l){
 // returns the deviation between point p and the line equation of the points
 float dev(Point p,Point** points, int size){
     dev(p,linear_reg(points,size));
+}
+
+int main(int argc, char *argv[]){
+    float x[]={1,2,3,4,5,6,7,8,9,10};
+    std::cout<<var(x,10)<<;
 }
