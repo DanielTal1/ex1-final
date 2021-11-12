@@ -13,11 +13,12 @@ class timeSeries{
     //saving the data in a map, the keys are the names of the features and the values are a vector of strings
     map<string,vector<std::string>> dataMap;
 
-    explicit timeSeries(const char* cvsFile){
-        extractToLines(cvsFile);
+public:
+    explicit timeSeries(const char* CSVFile){
+        extractToLines(CSVFile);
         }
-    void extractToLines(const char* cvsFile){
-        ifstream infile(cvsFile);
+    void extractToLines(const char* CSVFile){
+        ifstream infile(CSVFile);
         vector<string> features;
         string line;
         int count=0;
@@ -33,7 +34,7 @@ class timeSeries{
         }
     }
     //extracting all the values of features
-    void extractValues(const string& line){
+    void extractValues(string& line){
         istringstream s(line);
         string value;
         int count=0;
@@ -44,7 +45,7 @@ class timeSeries{
     }
 
     // extracting the names of all the features into names vector
-    void extractNames(const std::string& line){
+    void extractNames(string& line){
         istringstream s(line);
         string name;
         while (getline(s, name,',')){

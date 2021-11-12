@@ -6,6 +6,6 @@
 #define ANOMALY_DETECTION_UTIL_CPP_TIMESERIES_H
 class timeSeries{
 public:
-    timeSeries(const char* CSVFile);
+    explicit timeSeries(const char* CSVFile);
 };
 #endif //ANOMALY_DETECTION_UTIL_CPP_TIMESERIES_H

@@ -8,6 +8,8 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include <math.h>
+#include <algorithm>
+
 
 using namespace std;
 
