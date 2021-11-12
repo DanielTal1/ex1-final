@@ -11,7 +11,7 @@ class timeSeries{
     // saving the names in a vector in their original order
     vector<string> names;
     //saving the data in a map, the keys are the names of the features and the values are a vector of strings
-    map<string,vector<std::string>> dataMap;
+    map<string,vector<float>> dataMap;
 
 public:
     explicit timeSeries(const char* CSVFile){
@@ -39,7 +39,7 @@ public:
         string value;
         int count=0;
         while (getline(s, value,',')){
-            dataMap[this->names[count]].push_back(value);
+            dataMap[this->names[count]].push_back(stof(value));
             count++;
         }
     }
@@ -57,13 +57,21 @@ public:
         return this->names;
     }
 
-    map<string,vector<std::string>>& getDataMap(){
+    map<string,vector<float>>& getDataMap(){
         return this->dataMap;
     }
-    vector<string>& getValuesByCount(int count) {
+    vector<float>& getValuesByCount(int count) {
         return this->dataMap[this->names[count]];
     }
-    vector<string>& getValuesByName(const string& Name){
-        return this->dataMap[Name];
+    vector<float>& getValuesByName(const string& name){
+        return this->dataMap[name];
+    }
+
+    float getValueOfFeatureByName(const string& name,int time){
+        return this->dataMap[name][time];
+    }
+
+    float getValueOfFeatureByCount(int count,int time){
+        return this->dataMap[this->names[count]][time];
     }
 };
