@@ -4,8 +4,8 @@
 
 #ifndef ANOMALY_DETECTION_UTIL_CPP_TIMESERIES_H
 #define ANOMALY_DETECTION_UTIL_CPP_TIMESERIES_H
-class TimeSeries{
+class timeSeries{
 public:
-    TimeSeries(const char* CSVFile);
+    timeSeries(const char* CSVFile);
 };
 #endif //ANOMALY_DETECTION_UTIL_CPP_TIMESERIES_H

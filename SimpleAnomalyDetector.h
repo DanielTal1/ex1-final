@@ -4,6 +4,8 @@
 
 #ifndef ANOMALY_DETECTION_UTIL_CPP_SIMPLEANOMALYDETECTOR_H
 #define ANOMALY_DETECTION_UTIL_CPP_SIMPLEANOMALYDETECTOR_H
+#include "anomaly_detection_util.h"
+using namespace std;
 struct correlatedFeatures{
     string feature1,feature2; // names of the correlated features
     float corrlation;
@@ -14,8 +16,8 @@ class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
 public:
     SimpleAnomalyDetector();
     virtual ~SimpleAnomalyDetector();
-    virtual void learnNormal(const TimeSeries& ts);
-    virtual vector<AnomalyReport> detect(const TimeSeries& ts);
+    virtual void learnNormal(const timeSeries& ts);
+    virtual vector<AnomalyReport> detect(const timeSeries& ts);
     vector<correlatedFeatures> getNormalModel();
 };
 #endif //ANOMALY_DETECTION_UTIL_CPP_SIMPLEANOMALYDETECTOR_H
