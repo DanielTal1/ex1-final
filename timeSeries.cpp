@@ -1,69 +1,48 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <vector>
-#include <map>
-#include <sstream>
+
+#include "timeSeries.h"
 
 using namespace std;
 
-class timeSeries{
-    // saving the names in a vector in their original order
-    vector<string> names;
-    //saving the data in a map, the keys are the names of the features and the values are a vector of strings
-    map<string,vector<std::string>> dataMap;
 
-public:
-    explicit timeSeries(const char* CSVFile){
-        extractToLines(CSVFile);
-        }
-    void extractToLines(const char* CSVFile){
-        ifstream infile(CSVFile);
-        vector<string> features;
-        string line;
-        int count=0;
-        while (getline(infile, line,'\n'))
-        {
-            if(count==0){
-                extractNames(line);
-            }
-            else{
-                extractValues(line);
-            }
-            count++;
-        }
+//extracting all the values of features
+void timeSeries::extractValues(string &line) {
+    istringstream s(line);
+    string value;
+    int count = 0;
+    while (getline(s, value, ',')) {
+        dataMap[this->names[count]].push_back(value);
+        count++;
     }
-    //extracting all the values of features
-    void extractValues(string& line){
-        istringstream s(line);
-        string value;
-        int count=0;
-        while (getline(s, value,',')){
-            dataMap[this->names[count]].push_back(value);
-            count++;
-        }
-    }
+}
 
-    // extracting the names of all the features into names vector
-    void extractNames(string& line){
-        istringstream s(line);
-        string name;
-        while (getline(s, name,',')){
-            this->names.push_back(name);
+// extracting the names of all the features into names vector
+void timeSeries::extractNames(string &line) {
+    istringstream s(line);
+    string name;
+    while (getline(s, name, ',')) {
+        this->names.push_back(name);
+    }
+}
+
+void timeSeries::extractToLines(const char *CSVFile) {
+    ifstream infile(CSVFile);
+    vector<string> features;
+    string line;
+    int count = 0;
+    while (getline(infile, line, '\n')) {
+        if (count == 0) {
+            extractNames(line);
+        } else {
+            extractValues(line);
         }
+        count++;
     }
+}
 
-    vector<string>& getNames(){
-        return this->names;
-    }
+timeSeries::timeSeries(const char *CSVFile) {
+    extractToLines(CSVFile);
+}
 
-    map<string,vector<std::string>>& getDataMap(){
-        return this->dataMap;
-    }
-    vector<string>& getValuesByCount(int count) {
-        return this->dataMap[this->names[count]];
-    }
-    vector<string>& getValuesByName(const string& Name){
-        return this->dataMap[Name];
-    }
-};
+
+
+
