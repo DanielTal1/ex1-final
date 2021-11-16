@@ -1,5 +1,4 @@
 #include <cmath>
-#include <iostream>
 
 float average(float* a,int size){
     float sum = 0;
@@ -79,5 +78,5 @@ float dev(Point p,Line l){
 }
 // returns the deviation between point p and the line equation of the points
 float dev(Point p,Point** points, int size){
-    dev(p,linear_reg(points,size));
+    return dev(p,linear_reg(points,size));
 }

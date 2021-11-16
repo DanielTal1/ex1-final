@@ -53,6 +53,7 @@ void SimpleAnomalyDetector::learnNormal(const timeseries &ts) {
             correlatedFeatures* cf=new correlatedFeatures(*t,nameOther,currThreshold,line,
                                                           maxDev*1.1);
             v.push_back(*cf);
+            delete points;
         }
     }
 }
@@ -71,9 +72,9 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const timeseries &ts) {
                 reports.push_back(*report);
             }
         }
+        delete points;
     }
     return reports;
-
 }
 
 correlatedFeatures::correlatedFeatures (string feature1,string feature2, float correlation,
