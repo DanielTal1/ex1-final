@@ -63,8 +63,8 @@ Line linear_reg(Point** points, int size)
     float x[size], y[size], a, b;
     for(int i = 0 ; i < size ; ++i)
     {
-        x[i] = points[i]->x;
-        y[i] = points[i]->y;
+        x[i] = (*points+i)->x;
+        y[i] = (*points+i)->y;
     }
     a = cov(x, y, size)/ var(x, size);
     b = average(y, size) - a * average(x, size);

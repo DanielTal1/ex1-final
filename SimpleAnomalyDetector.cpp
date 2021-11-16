@@ -1,57 +1,81 @@
 
 #include "SimpleAnomalyDetector.h"
 #include "AnomalyDetector.h"
+#include <cmath>
+#include "timeseries.h"
+
+Point* createPoints(map<string, vector<float>>&data,int size,string firstName, string secondName){
+    Point* points= new Point[size];
+    for(int i=0;i<size;++i)
+    {
+        float x= data[firstName][i];
+        float y= data[secondName][i];
+        points[i] =  Point(x,y);
+    }
+    return points;
+}
 
 
-void SimpleAnomalyDetector::learnNormal(const timeSeries &ts) {
-    vector<string> names = ts.getNames(), column;
-    map<string, vector<string>> data = ts.getDataMap();
-    float correlation, currThreshold = 0.4;
-    string name;
+void SimpleAnomalyDetector::learnNormal(const timeseries &ts) {
+    vector<string> names = ts.getNames();
+    map<string, vector<float>> data (ts.getDataMap());
+    unsigned long valuesNum = data[names[0]].size();
+    float correlation;
+    string nameOther;
+    vector<float *>pointers;
+    for (auto name : names) {
+        pointers.push_back(&data[name][0]);
+    }
     int isFoundCorr;
     for (auto t = names.begin(); t != names.end(); ++t) {
+        float currThreshold = 0.9;
         isFoundCorr=0;
-        auto *dataStrings1 = (string *) &t->data()[0];
-        float *x = nullptr;
-
-        for (int i = 0; i < dataStrings1->length(); ++i) {
-            *(x + i) = atof(dataStrings1[i].c_str());
-        }
-        float *y = nullptr;
         for (auto k = t + 1; k != names.end(); ++k) {
-            auto *dataStrings2 = (string *) &k->data()[0];
-
-            for (int i = 0; i < dataStrings2->length(); ++i) {
-                *(x + i) = atof(dataStrings2[i].c_str());
-            }
-            correlation = pearson(x, y, dataStrings2->length());
+            correlation = fabs(pearson(pointers[t-names.begin()], pointers[k-names.begin()], valuesNum));
             if (correlation > currThreshold) {
                 currThreshold = correlation;
-                name = *k;
+                nameOther = *k;
                 isFoundCorr =1;
             }
-
         }
         if(isFoundCorr)
         {
-            Point* points;
-            for(int i=0;i<dataStrings1->length();++i)
+            Point* points = createPoints(data,valuesNum,*t,nameOther);
+            Line line= linear_reg(&(points),valuesNum);
+            float maxDev=dev(*(points),line);
+            for(int i=1;i<valuesNum;++i)
             {
-                *(points+i) =  Point(*(x+i),*(y+i));
+                float currentDev= dev(*(points+i),line);
+                if(currentDev>maxDev){
+                    maxDev = currentDev;
+                }
             }
-            v.assign(1,correlatedFeatures(*t+"-"+name,correlation,
-                                            linear_reg(&points,dataStrings1->length())));
+            correlatedFeatures* cf=new correlatedFeatures(*t,nameOther,currThreshold,line,
+                                                          maxDev*1.1);
+            v.push_back(*cf);
         }
-
     }
+}
 
+vector<AnomalyReport> SimpleAnomalyDetector::detect(const timeseries &ts) {
+    vector<AnomalyReport> reports;
+    vector<string> names = ts.getNames();
+    map<string, vector<float>> data (ts.getDataMap());
+    unsigned long valuesNum = data[names[0]].size();
+    for(correlatedFeatures i : this->v){
+        Point* points = createPoints(data,valuesNum,i.getFeature1(),i.getFeature2());
+        for(int j=0; j<valuesNum;j++){
+            float currentDev = dev(*(points+j),i.getLine());
+            if(currentDev>i.getThreshold()){
+                AnomalyReport* report= new AnomalyReport(i.getFeature1()+"-"+i.getFeature2(),j+1);
+                reports.push_back(*report);
+            }
+        }
+    }
+    return reports;
 
 }
 
-vector<AnomalyReport> SimpleAnomalyDetector::detect(const timeSeries &ts) {
-    // TODO Auto-generated destructor stub
-}
-
-correlatedFeatures::correlatedFeatures(basic_string<char> basicString, float d, Line line) {
-
-}
+correlatedFeatures::correlatedFeatures (string feature1,string feature2, float correlation,
+                                        Line line, float threshold):feature1(feature1),feature2(feature2),
+                                        corrlation(correlation), lin_reg(line),threshold(threshold){}

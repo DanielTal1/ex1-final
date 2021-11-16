@@ -1,22 +1,23 @@
 
-#include "timeSeries.h"
+#include "AnomalyDetector.h"
+#include "timeseries.h"
 
 using namespace std;
 
 
 //extracting all the values of features
-void timeSeries::extractValues(string &line) {
+void timeseries::extractValues(string &line) {
     istringstream s(line);
     string value;
     int count = 0;
     while (getline(s, value, ',')) {
-        dataMap[this->names[count]].push_back(value);
+        dataMap[this->names[count]].push_back(stof(value));
         count++;
     }
 }
 
 // extracting the names of all the features into names vector
-void timeSeries::extractNames(string &line) {
+void timeseries::extractNames(string &line) {
     istringstream s(line);
     string name;
     while (getline(s, name, ',')) {
@@ -24,7 +25,7 @@ void timeSeries::extractNames(string &line) {
     }
 }
 
-void timeSeries::extractToLines(const char *CSVFile) {
+void timeseries::extractToLines(const char *CSVFile) {
     ifstream infile(CSVFile);
     vector<string> features;
     string line;
@@ -39,10 +40,8 @@ void timeSeries::extractToLines(const char *CSVFile) {
     }
 }
 
-timeSeries::timeSeries(const char *CSVFile) {
+timeseries::timeseries(const char *CSVFile) {
     extractToLines(CSVFile);
 }
-
-
 
 

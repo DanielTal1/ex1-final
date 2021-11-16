@@ -1,8 +1,11 @@
 #ifndef ANOMALY_DETECTION_UTIL_CPP_ANOMALYDETECTOR_H
 #define ANOMALY_DETECTION_UTIL_CPP_ANOMALYDETECTOR_H
-#include "timeSeries.h"
-
 using namespace std;
+#include <iostream>
+#include <string>
+#include "timeseries.h"
+
+
 class AnomalyReport{
 public:
     const string description;
@@ -12,8 +15,8 @@ public:
 };
 class TimeSeriesAnomalyDetector {
 public:
-    virtual void learnNormal(const timeSeries& ts)=0;
-    virtual std::vector<AnomalyReport> detect(const timeSeries& ts)=0;
+    virtual void learnNormal(const timeseries& ts)=0;
+    virtual std::vector<AnomalyReport> detect(const timeseries& ts)=0;
     virtual ~TimeSeriesAnomalyDetector(){}
 };
 #endif //ANOMALY_DETECTION_UTIL_CPP_ANOMALYDETECTOR_H
