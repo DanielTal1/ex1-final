@@ -4,11 +4,9 @@
 
 #ifndef ANOMALY_DETECTION_UTIL_CPP_SIMPLEANOMALYDETECTOR_H
 #define ANOMALY_DETECTION_UTIL_CPP_SIMPLEANOMALYDETECTOR_H
-
 #include "anomaly_detection_util.h"
 #include "AnomalyDetector.h"
 #include <algorithm>
-
 using namespace std;
 struct correlatedFeatures {
     correlatedFeatures(string feature1,string feature2, float correlation, Line line, float threshold);
@@ -49,5 +47,4 @@ public:
        return this->v;
     }
 };
-
 #endif //ANOMALY_DETECTION_UTIL_CPP_SIMPLEANOMALYDETECTOR_H

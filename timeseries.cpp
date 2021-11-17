@@ -25,6 +25,7 @@ void timeseries::extractNames(string &line) {
     }
 }
 
+//separates the file into lines
 void timeseries::extractToLines(const char *CSVFile) {
     ifstream infile(CSVFile);
     vector<string> features;
@@ -40,6 +41,7 @@ void timeseries::extractToLines(const char *CSVFile) {
     }
 }
 
+//timeseries constructor
 timeseries::timeseries(const char *CSVFile) {
     extractToLines(CSVFile);
 }
